@@ -1,0 +1,245 @@
+{
+  "log": {
+    "level": "warn",
+    "output": "logs/sing-box.log",
+    "timestamp": true,
+    "disabled": false
+  },
+  "dns": {
+    "servers": [
+      {
+        "tag": "dns-secure",
+        "address": "https://1.1.1.1/dns-query",
+        "address_resolver": "dns-direct",
+        "address_strategy": "prefer_ipv4",
+        "strategy": "prefer_ipv4",
+        "detour": "proxy-out",
+        "max_cache_size": 65535,
+        "disable_cache": false,
+        "disable_expire": false
+      },
+      {
+        "tag": "dns-direct",
+        "address": "https://doh.pub/dns-query",
+        "address_strategy": "prefer_ipv4",
+        "strategy": "prefer_ipv4",
+        "detour": "direct-out",
+        "max_cache_size": 65535
+      },
+      {
+        "tag": "dns-block",
+        "address": "rcode://success"
+      }
+    ],
+    "rules": [
+      {
+        "domain_suffix": [
+          ".cn",
+          ".中国",
+          ".公司",
+          ".网络"
+        ],
+        "server": "dns-direct"
+      },
+      {
+        "domain_suffix": [
+          ".google.com",
+          ".googleapis.com",
+          ".gstatic.com",
+          ".youtube.com",
+          ".ytimg.com",
+          ".ggpht.com"
+        ],
+        "server": "dns-secure"
+      },
+      {
+        "rule_set": [
+          "geosite-category-ads-all"
+        ],
+        "server": "dns-block",
+        "disable_cache": true
+      }
+    ],
+    "final": "dns-secure",
+    "independent_cache": true
+  },
+  "inbounds": [
+    {
+      "type": "tun",
+      "tag": "tun-in",
+      "interface_name": "onefcloud-tun",
+      "inet4_address": "172.19.0.1/30",
+      "inet6_address": "fdfe:dcba:9876::1/126",
+      "auto_route": true,
+      "strict_route": true,
+      "stack": "mixed",
+      "mtu": 9000,
+      "sniff": true,
+      "sniff_override_destination": true,
+      "sniff_timeout": "300ms",
+      "domain_strategy": "prefer_ipv4",
+      "endpoint_independent_nat": false
+    },
+    {
+      "type": "mixed",
+      "tag": "mixed-in",
+      "listen": "127.0.0.1",
+      "listen_port": 2080,
+      "sniff": true,
+      "sniff_override_destination": true,
+      "sniff_timeout": "300ms",
+      "domain_strategy": "prefer_ipv4"
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "vless",
+      "tag": "proxy-out",
+      "server": "YOUR_SERVER_ADDRESS",
+      "server_port": 443,
+      "uuid": "YOUR_UUID",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "server_name": "YOUR_SERVER_NAME",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "YOUR_PUBLIC_KEY",
+          "short_id": "YOUR_SHORT_ID"
+        },
+        "alpn": [
+          "h2",
+          "http/1.1"
+        ],
+        "min_version": "1.3",
+        "max_version": "1.3"
+      },
+      "multiplex": {
+        "enabled": true,
+        "protocol": "h2mux",
+        "max_connections": 4,
+        "min_streams": 4,
+        "max_streams": 0,
+        "padding": true,
+        "brutal": {
+          "enabled": true,
+          "up_mbps": 100,
+          "down_mbps": 500
+        }
+      },
+      "packet_encoding": "xudp"
+    },
+    {
+      "type": "direct",
+      "tag": "direct-out",
+      "override_address": "",
+      "override_port": 0
+    },
+    {
+      "type": "block",
+      "tag": "block-out"
+    },
+    {
+      "type": "dns",
+      "tag": "dns-out"
+    }
+  ],
+  "route": {
+    "rules": [
+      {
+        "protocol": "dns",
+        "outbound": "dns-out"
+      },
+      {
+        "ip_is_private": true,
+        "outbound": "direct-out"
+      },
+      {
+        "domain_suffix": [
+          ".cn",
+          ".中国"
+        ],
+        "outbound": "direct-out"
+      },
+      {
+        "rule_set": [
+          "geosite-cn",
+          "geoip-cn"
+        ],
+        "outbound": "direct-out"
+      },
+      {
+        "rule_set": [
+          "geosite-category-ads-all"
+        ],
+        "outbound": "block-out"
+      },
+      {
+        "process_name": [
+          "steam.exe",
+          "steamwebhelper.exe",
+          "EpicGamesLauncher.exe",
+          "Battle.net.exe"
+        ],
+        "outbound": "direct-out"
+      },
+      {
+        "process_name": [
+          "WindowsUpdate",
+          "TiWorker.exe",
+          "wuauserv.dll"
+        ],
+        "outbound": "direct-out"
+      }
+    ],
+    "rule_set": [
+      {
+        "tag": "geosite-cn",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-cn.srs",
+        "download_detour": "proxy-out",
+        "update_interval": "7d"
+      },
+      {
+        "tag": "geoip-cn",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-cn.srs",
+        "download_detour": "proxy-out",
+        "update_interval": "7d"
+      },
+      {
+        "tag": "geosite-category-ads-all",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ads-all.srs",
+        "download_detour": "proxy-out",
+        "update_interval": "7d"
+      }
+    ],
+    "final": "proxy-out",
+    "auto_detect_interface": true,
+    "default_interface": "",
+    "override_android_vpn": true
+  },
+  "experimental": {
+    "cache_file": {
+      "enabled": true,
+      "path": "cache.db",
+      "store_fakeip": true,
+      "store_rdrc": true,
+      "rdrc_timeout": "7d"
+    },
+    "clash_api": {
+      "external_controller": "127.0.0.1:9090",
+      "external_ui": "ui",
+      "secret": "",
+      "default_mode": "rule"
+    }
+  }
+}

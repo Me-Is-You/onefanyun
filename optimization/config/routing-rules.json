@@ -1,0 +1,211 @@
+{
+  "_comment": "智能分流规则 - 极致性能优化",
+  "routing_strategy": {
+    "description": "基于域名、IP、进程的智能分流",
+    "principles": [
+      "国内流量直连，避免绕路",
+      "广告流量拦截，节省带宽",
+      "敏感流量加密，保护隐私",
+      "游戏流量优化，降低延迟"
+    ]
+  },
+  "direct_domains": {
+    "description": "直连域名列表",
+    "categories": {
+      "cn_tld": [".cn", ".中国", ".公司", ".网络"],
+      "major_cn_sites": [
+        ".baidu.com", ".baidupcs.com", ".bdstatic.com",
+        ".qq.com", ".qpic.cn", ".gtimg.cn", ".idqqimg.com",
+        ".taobao.com", ".tmall.com", ".alicdn.com", ".aliyun.com",
+        ".jd.com", ".360buyimg.com",
+        ".weibo.com", ".sinaimg.cn",
+        ".douyin.com", ".bytedance.com", ".toutiao.com",
+        ".bilibili.com", ".hdslb.com",
+        ".zhihu.com", ".zhimg.com",
+        ".163.com", ".126.net", ".netease.com",
+        ".xiaomi.com", ".mi.com", ".miui.com",
+        ".huawei.com", ".hicloud.com",
+        ".meituan.com", ".dianping.com",
+        ".pinduoduo.com", ".pddpic.com",
+        ".kuaishou.com",
+        ".snssdk.com",
+        ".feishu.cn", ".lark.com",
+        ".dingtalk.com",
+        ".alipay.com", ".alipayobjects.com"
+      ],
+      "streaming_cn": [
+        ".iqiyi.com", ".qiyi.com", ".qiyipic.com",
+        ".youku.com", ".ykimg.com",
+        ".le.com",
+        ".mgtv.com",
+        ".pptv.com",
+        ".sohu.com", ".sohucs.com",
+        ".fun.tv",
+        ".kankan.com"
+      ],
+      "cloud_cn": [
+        ".aliyuncs.com",
+        ".myqcloud.com",
+        ".volces.com",
+        ".ucloud.cn",
+        ".qingcloud.com",
+        ".ctyun.cn",
+        ".hwclouds.com"
+      ],
+      "cdn_cn": [
+        ".cdn20.com",
+        ".cdn30.com",
+        ".wscdns.com",
+        ".wsdvs.com",
+        ".ourdvsss.com",
+        ".cdnhwc1.com",
+        ".cdnhwc2.com",
+        ".cdnhwc3.com"
+      ]
+    }
+  },
+  "proxy_domains": {
+    "description": "代理域名列表",
+    "categories": {
+      "google": [
+        ".google.com", ".googleapis.com", ".gstatic.com",
+        ".googleusercontent.com", ".googlesyndication.com",
+        ".googletagmanager.com", ".googleadservices.com",
+        ".youtube.com", ".ytimg.com", ".ggpht.com", ".googlevideo.com",
+        ".gmail.com", ".googlemail.com",
+        ".google.cn", ".google.com.hk"
+      ],
+      "microsoft": [
+        ".microsoft.com", ".windows.com", ".windowsupdate.com",
+        ".live.com", ".outlook.com", ".office.com", ".office365.com",
+        ".msn.com", ".bing.com", ".skype.com",
+        ".azure.com", ".microsoftonline.com",
+        ".msedge.net", ".msftconnecttest.com"
+      ],
+      "social_media": [
+        ".twitter.com", ".x.com", ".twimg.com", ".t.co",
+        ".facebook.com", ".fbcdn.net", ".fb.com",
+        ".instagram.com", ".cdninstagram.com",
+        ".reddit.com", ".redd.it", ".redditstatic.com",
+        ".telegram.org", ".t.me", ".telegram.me",
+        ".whatsapp.com", ".whatsapp.net",
+        ".line.me", ".line-scdn.net",
+        ".discord.com", ".discord.gg", ".discordapp.com",
+        ".signal.org"
+      ],
+      "streaming": [
+        ".netflix.com", ".nflxvideo.net", ".nflximg.com",
+        ".spotify.com", ".scdn.co",
+        ".twitch.tv", ".ttvnw.net",
+        ".hulu.com",
+        ".disneyplus.com", ".dssott.com",
+        ".hbomax.com",
+        ".primevideo.com", ".amazonvideo.com",
+        ".apple.com", ".mzstatic.com", ".icloud.com",
+        ".vimeo.com"
+      ],
+      "ai_services": [
+        ".openai.com", ".chatgpt.com",
+        ".anthropic.com", ".claude.ai",
+        ".google.ai", ".deepmind.com",
+        ".huggingface.co",
+        ".midjourney.com",
+        ".stability.ai",
+        ".perplexity.ai"
+      ],
+      "dev_tools": [
+        ".github.com", ".github.io", ".githubusercontent.com", ".githubassets.com",
+        ".stackoverflow.com", ".stackexchange.com",
+        ".npmjs.com", ".npmjs.org",
+        ".docker.com", ".docker.io",
+        ".kubernetes.io",
+        ".medium.com",
+        ".dev.to",
+        ".vercel.app", ".vercel.com",
+        ".netlify.app", ".netlify.com",
+        ".herokuapp.com"
+      ],
+      "news": [
+        ".nytimes.com", ".wsj.com", ".washingtonpost.com",
+        ".bbc.com", ".bbc.co.uk",
+        ".reuters.com",
+        ".apnews.com",
+        ".bloomberg.com",
+        ".economist.com",
+        ".ft.com"
+      ]
+    }
+  },
+  "block_domains": {
+    "description": "拦截域名列表",
+    "categories": {
+      "ads": [
+        "geosite-category-ads-all"
+      ],
+      "malware": [
+        "geosite-malware",
+        "geosite-phishing",
+        "geosite-cryptominers"
+      ],
+      "tracking": [
+        ".doubleclick.net",
+        ".googlesyndication.com",
+        ".google-analytics.com",
+        ".facebook.net",
+        ".fbcdn.net",
+        ".adskeeper.com",
+        ".adcolony.com",
+        ".unity3d.com",
+        ".appsflyer.com",
+        ".adjust.com",
+        ".branch.io",
+        ".singular.net"
+      ]
+    }
+  },
+  "direct_ip_ranges": {
+    "description": "直连 IP 段",
+    "china": [
+      "geoip-cn",
+      "10.0.0.0/8",
+      "172.16.0.0/12",
+      "192.168.0.0/16",
+      "127.0.0.0/8",
+      "::1/128",
+      "fc00::/7",
+      "fe80::/10"
+    ]
+  },
+  "process_rules": {
+    "description": "基于进程的分流规则",
+    "direct_processes": [
+      "steam.exe",
+      "steamwebhelper.exe",
+      "EpicGamesLauncher.exe",
+      "Battle.net.exe",
+      "RiotClientServices.exe",
+      "LeagueClient.exe",
+      "WeGame.exe",
+      "QQGame.exe",
+      "WindowsUpdate",
+      "TiWorker.exe",
+      "MpCmdRun.exe",
+      "OneDrive.exe",
+      "Teams.exe"
+    ],
+    "proxy_processes": [
+      "chrome.exe",
+      "msedge.exe",
+      "firefox.exe",
+      "brave.exe",
+      "opera.exe",
+      "vivaldi.exe",
+      "Code.exe",
+      "code.exe",
+      "Cursor.exe",
+      "Postman.exe",
+      "Slack.exe",
+      "Discord.exe"
+    ]
+  }
+}
