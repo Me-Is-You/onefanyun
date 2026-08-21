@@ -522,12 +522,29 @@ Remove-NetFirewallRule -DisplayName "onefcloud*"
 
 ## 📞 技术支持
 
+## 🔧 程序级优化（v1.1 · 基于真实账号实测 2026-08-21）
+
+闭源二进制无法重编译，优化落在**订阅链路与内核运行层**——用 `Program-Optimizer.bat` 双击启动：
+
+| 工具 | 作用 |
+|------|------|
+| `scripts/profile-optimizer.ps1` | 拉取订阅并打补丁：修复香港11端口(40111→44111)、清除 null short-id、强制 clash.meta 格式（根治 flag=clash 空节点 P0）、关闭局域网开放代理(allow-lan)、注入 keep-alive/find-process-mode/状态持久化等性能项、可选 smux 多路复用、可选私有DNS预解析固化(抗 178.94.14.101 单点) |
+| `scripts/subscription-optimizer-server.ps1` | 本机 127.0.0.1:8787 修复代理：App 订阅地址一次性替换后，每次自动更新都拿到修复+优化配置；带缓存（上游故障时继续服务）、透传流量/到期头 |
+| `scripts/run-optimized-core.ps1` | 直接用发行包自带 mihomo 内核运行优化配置：GEO 数据库自动就位、启动前配置校验、崩溃自动重启看门狗、可选 TUN 全局接管（自动提权） |
+| `Program-Optimizer.bat` | 中文菜单一键入口（生成配置 / 启动修复代理 / 内核直跑 / TUN / 系统级优化） |
+
+输出配置: `runtime\optimized-profile.yaml`（72 节点 · VLESS+Reality+Vision）。
+实测依据见 `docs/TEST-REPORT-20260821.md`。
+
+---
+
 如有问题，请参考：
 
 1. **部署指南** - `docs/deployment-guide.md`
 2. **安全审计** - `docs/security-audit.md`
 3. **故障排除** - `docs/troubleshooting.md`
 4. **健康检查** - `.\scripts\health-check.ps1`
+5. **测试报告** - `docs/TEST-REPORT-20260821.md`
 
 ---
 
